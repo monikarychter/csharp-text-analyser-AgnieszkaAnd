@@ -4,21 +4,39 @@ using System.IO;
 
 namespace TextAnalyzer {
     class FileContent {
-        private string _fileContent;
+        private List<string> _fileContent = null;
         public FileContent(String text) { // what is the difference between String and string?
-            this._fileContent = text;
+            this._fileContent = new List<string>();
         }
         public Iterator CharIterator() {
-            //cos
+            return new CharIterator(this);
         }
         public Iterator WordIterator() {
-            //cos
+            return new WordIterator(this);
         }
         public string GetFilename() {
             //foreach file in the directory - go through and compare content/first line
-            string filename = fi.Name; 
+            // string filename = fi.Name; 
             return "";
         }
 
+        public string this[int itemIndex] {
+            get {
+                if (itemIndex < _fileContent.Count) {
+                    return _fileContent[itemIndex];
+                }
+                else {
+                    return string.Empty;
+                }
+            }
+            set {                
+                _fileContent.Add(value);                                
+            }
+        }
+        public int Count {
+            get {
+                return _fileContent.Count;
+            }
+        }
     }
 }

@@ -4,9 +4,13 @@ using System.IO;
 
 namespace TextAnalyzer {
     class FileContent {
-        private List<string> _fileContent = null;
-        public FileContent(String text) { // what is the difference between String and string?
-            this._fileContent = new List<string>();
+        private string _fileName;
+        private string _fileContentText = null;
+        // private string[] _fileContent = null;
+        public FileContent(String filename) { // what is the difference between String and string?
+            this._fileName = filename;
+            this._fileContentText = File.ReadAllText(filename).Replace("\n", string.Empty);
+            // this._fileContent = _fileContentText.Split("");
         }
         public Iterator CharIterator() {
             return new CharIterator(this);
@@ -15,28 +19,29 @@ namespace TextAnalyzer {
             return new WordIterator(this);
         }
         public string GetFilename() {
-            //foreach file in the directory - go through and compare content/first line
-            // string filename = fi.Name; 
-            return "";
+            return this._fileName;
+        }
+        public string GetFileText() {
+            return this._fileContentText;
         }
 
-        public string this[int itemIndex] {
-            get {
-                if (itemIndex < _fileContent.Count) {
-                    return _fileContent[itemIndex];
-                }
-                else {
-                    return string.Empty;
-                }
-            }
-            set {                
-                _fileContent.Add(value);                                
-            }
-        }
-        public int Count {
-            get {
-                return _fileContent.Count;
-            }
-        }
+        // public string this[int itemIndex] {
+        //     get {
+        //         if (itemIndex < _fileContent.) {
+        //             return _fileContent[itemIndex];
+        //         }
+        //         else {
+        //             return string.Empty;
+        //         }
+        //     }
+        //     set {                
+        //         _fileContent.Add(value);                                
+        //     }
+        // }
+        // public int Count {
+        //     get {
+        //         return _fileContent.Count;
+        //     }
+        // }
     }
 }

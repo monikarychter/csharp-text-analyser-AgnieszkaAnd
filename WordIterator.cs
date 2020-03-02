@@ -4,12 +4,27 @@ using System.Collections.Generic;
 namespace TextAnalyzer {
     class WordIterator : Iterator {
         private int index = 0;
-        private FileContent fileContent = null; 
+        private List<string> data = new List<string>();
+        public string FirstItem {
+            get {
+                index = 0;
+                return data[index];
+            }
+        }
+        public string CurrentItem {
+            get {
+                return data[index];
+            }
+        }
+
         public WordIterator(FileContent fileContent) {
-            this.fileContent = fileContent;
+            string temp = fileContent.GetFileText().Replace("\r", " ");
+            foreach (string word in temp.ToLower().Split(" ")){
+                data.Add(word.ToString());
+            }
         }
         public bool HasNext() {
-            if (index < fileContent.Count) {
+            if (index < data.Count) {
                 return true;
             }
             return false;
@@ -17,23 +32,12 @@ namespace TextAnalyzer {
         public string MoveNext() {
             index += 1;
             if (HasNext()) {
-                return fileContent[index];
+                return data[index];
             } else {
                 return string.Empty;
             }
         }
         public void Remove() {}
-        public string FirstItem {
-            get {
-                index = 0;
-                return fileContent[index];
-            }
-        }
-        public string CurrentItem {
-            get {
-                return fileContent[index];
-            }
-        }
+
     }
-}
 }

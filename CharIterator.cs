@@ -19,6 +19,7 @@ namespace TextAnalyzer {
 //     }
 // }
     class CharIterator : Iterator {
+        FileContent fileContent;
         private int index;
         private List<string> data = new List<string>(); // lista lub tabela, moze byc zewn. zrodlo danych, losowa liczba
 
@@ -33,13 +34,15 @@ namespace TextAnalyzer {
                 return data[this.index];
             }
         }
+
         public CharIterator(FileContent fileContent) {
-            this.index = 0;
-            foreach (char letter in fileContent.GetFileText()){
-                if (isAlphaNumeric(letter.ToString())) {
-                    data.Add(letter.ToString().ToLower());
-                }
-            }
+            this.fileContent = fileContent;
+            // this.index = 0;
+            // foreach (char letter in fileContent.GetFileText()){
+            //     if (isAlphaNumeric(letter.ToString())) {
+            //         data.Add(letter.ToString().ToLower());
+            //     }
+            // }
         }
         public bool HasNext() {
             if (this.index < data.Count) {
@@ -47,12 +50,24 @@ namespace TextAnalyzer {
             }
             return false;
         }
-        public string MoveNext() {
+        // public IEnumerable<string> MoveNext() {
+
+        // }
+        // public string MoveNext() {
+        //     this.index++;
+        //     if (HasNext()) {
+        //         return data[this.index];
+        //     } else {
+        //         return string.Empty;
+        //     }
+        // }
+
+        public IEnumerable<string> MoveNext() {
             this.index++;
-            if (HasNext()) {
-                return data[this.index];
-            } else {
-                return string.Empty;
+            foreach (char letter in fileContent.GetFileText()){
+                if (isAlphaNumeric(letter.ToString())) {
+                    yield return letter.ToString();
+                }
             }
         }
         public void Remove() {}

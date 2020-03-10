@@ -21,6 +21,15 @@ namespace TextAnalyzer {
         public string GetFilename() {
             return this._fileName;
         }
+
+        public IEnumerable<string> GetLines()
+        {
+            var lines = File.ReadLines(_fileName);
+            foreach(var line in lines)
+            {
+                yield return line;
+            }
+        }
         public string GetFileText() {
             return this._fileContentText;
         }

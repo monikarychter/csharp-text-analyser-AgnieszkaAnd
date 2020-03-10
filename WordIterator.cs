@@ -20,7 +20,9 @@ namespace TextAnalyzer {
         public WordIterator(FileContent fileContent) {
             string temp = fileContent.GetFileText().Replace("\r", " ");
             foreach (string word in temp.ToLower().Split(" ")){
-                data.Add(word.ToString());
+                if (word != "") {
+                    data.Add(word.Trim().ToString());
+                }
             }
         }
         public bool HasNext() {

@@ -3,21 +3,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace TextAnalyzer {
-//     public class MyData
-// {
-//     private string _id;
-//     private List<string> _data;
-//     public MyData(string id, params string[] data)
-//     {
-//         _id = id;
-//         _data = new List<string>(data);
-//     }
-//     public IEnumerator<string> GetEnumerator()
-//     {
-//         yield return _id;
-//         foreach(string d in _data) yield return d;
-//     }
-// }
     class CharIterator : Iterator {
         private int index;
         private List<string> data = new List<string>(); // lista lub tabela, moze byc zewn. zrodlo danych, losowa liczba

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace TextAnalyzer {
@@ -21,18 +20,20 @@ namespace TextAnalyzer {
             string temp = fileContent.GetFileText().Replace("\r", " ");
             foreach (string word in temp.ToLower().Split(" ")){
                 if (word != "") {
-                    data.Add(word.Trim().ToString());
+                    data.Add(word.ToString());
                 }
             }
         }
+
         public bool HasNext() {
             if (index < data.Count) {
                 return true;
             }
             return false;
         }
+
         public string MoveNext() {
-            index += 1;
+            this.index++;
             if (HasNext()) {
                 return data[index];
             } else {

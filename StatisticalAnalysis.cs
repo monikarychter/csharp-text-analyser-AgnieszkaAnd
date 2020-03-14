@@ -5,10 +5,10 @@ using System.Linq;
 namespace TextAnalyzer {
     class StatisticalAnalysis {
         public Iterator iterator;
-        Dictionary<string, int> dict= new Dictionary<string, int>();
+        Dictionary<string, int> iteratorItemsCount= new Dictionary<string, int>();
 
-        public StatisticalAnalysis(Iterator iteratorName){
-            this.iterator = iteratorName;
+        public StatisticalAnalysis(Iterator iteratorInstance){
+            this.iterator = iteratorInstance;
         }
 
         public int[] CountOf(params string[] args) {
@@ -35,13 +35,13 @@ namespace TextAnalyzer {
 
         public int DictionarySize() {
             for (string s = this.iterator.FirstItem; this.iterator.HasNext(); s = this.iterator.MoveNext()) {
-                if (dict.ContainsKey(this.iterator.CurrentItem)) {
-                    dict[this.iterator.CurrentItem] += 1;
+                if (iteratorItemsCount.ContainsKey(this.iterator.CurrentItem)) {
+                    iteratorItemsCount[this.iterator.CurrentItem] += 1;
                 } else {
-                    dict[this.iterator.CurrentItem] = 1;
+                    iteratorItemsCount[this.iterator.CurrentItem] = 1;
                 }
             }
-            return dict.Count;
+            return iteratorItemsCount.Count;
         }
 
 
@@ -56,7 +56,7 @@ namespace TextAnalyzer {
         public List<string> GetMostUsedWords(int percentage) {
             List<string> results = new List<string>();
             int wordCountTotal = this.Size();
-            var items = from pair in dict
+            var items = from pair in iteratorItemsCount
                     orderby pair.Value descending
                     select pair;
                     
@@ -77,7 +77,7 @@ namespace TextAnalyzer {
             int wordCountTotal = this.Size();
             double currentPercentage;
 
-            foreach (KeyValuePair<string, int> pair in dict) {
+            foreach (KeyValuePair<string, int> pair in iteratorItemsCount) {
                 currentPercentage = (double) 100 * pair.Value/wordCountTotal;
                 results[pair.Key] = currentPercentage;
             }
@@ -105,14 +105,14 @@ namespace TextAnalyzer {
             Dictionary<string, double> percentages = new Dictionary<string, double>();
             int charCountTotal = this.Size();
 
-            foreach (string letter in dict.Keys) {
+            foreach (string letter in iteratorItemsCount.Keys) {
                 if (percentages.Keys.Contains(letter)){
                     percentages[letter] += 1;
                 } else {
                     percentages[letter] = 1;
                 }
             }
-            foreach (string letter in dict.Keys) {
+            foreach (string letter in iteratorItemsCount.Keys) {
                 percentages[letter] = (double) 100*percentages[letter]/charCountTotal;
             }
             return percentages;

@@ -71,6 +71,19 @@ namespace TextAnalyzer {
             return results;
         }
 
+        public Dictionary<string, double> GetLettersPercentages() {
+            this.DictionarySize();
+            Dictionary<string, double> results = new Dictionary<string, double>();
+            int wordCountTotal = this.Size();
+            double currentPercentage;
+
+            foreach (KeyValuePair<string, int> pair in dict) {
+                currentPercentage = (double) 100 * pair.Value/wordCountTotal;
+                results[pair.Key] = currentPercentage;
+            }
+            return results;
+        }
+
         public int CountVowels() {
             int[] counts = this.CountOf("a", "e", "i", "o", "u");//, "y");
             int vowelsCount = 0;

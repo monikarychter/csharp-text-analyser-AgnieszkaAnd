@@ -52,12 +52,12 @@ namespace TextAnalyzer
                     System.Console.Write($"{item},");
                 }
                 System.Console.WriteLine("]");
-                System.Console.WriteLine($"'love' count: {newAnalysisWord.CountOf("love")[0]}");
-                System.Console.WriteLine($"'hate' count: {newAnalysisWord.CountOf("hate")[0]}");
-                System.Console.WriteLine($"'music' count: {newAnalysisWord.CountOf("music")[0]}");
+                System.Console.WriteLine($"'love' count: {newAnalysisWord.CountOf("love")["love"]}");
+                System.Console.WriteLine($"'hate' count: {newAnalysisWord.CountOf("hate")["hate"]}");
+                System.Console.WriteLine($"'music' count: {newAnalysisWord.CountOf("music")["music"]}");
                 System.Console.WriteLine($"vowels %: {newAnalysisChar.CountVowels()}");
-                System.Console.WriteLine($"'a' count: {newAnalysisChar.CountOf("a")[0]}");
-                System.Console.WriteLine($"'e' count: {newAnalysisChar.CountOf("e")[0]}");
+                System.Console.WriteLine($"'a' count: {newAnalysisChar.CountOf("a")["a"]}");
+                System.Console.WriteLine($"'e' count: {newAnalysisChar.CountOf("e")["e"]}");
                 System.Console.WriteLine($"'a:e count ratio' : {String.Format("{0:0.00}", newAnalysisChar.CountRatio("a","e"))}");
                 foreach (KeyValuePair<string, double> item in newAnalysisChar.GetLettersPercentages()) {
                     System.Console.Write($"[ {item.Key.ToUpper()} -> {String.Format("{0:0.00}", item.Value)}] ");

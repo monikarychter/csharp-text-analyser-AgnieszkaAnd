@@ -5,45 +5,37 @@ using System.Linq;
 namespace TextAnalyzer {
     class StatisticalAnalysis {
         public Iterator iterator;
-        Dictionary<string, int> iteratorItemsCount= new Dictionary<string, int>();
+        private Dictionary<string, int> iteratorDictionaryWithCounts= new Dictionary<string, int>();
 
         public StatisticalAnalysis(Iterator iteratorInstance){
             this.iterator = iteratorInstance;
         }
 
-        public int[] CountOf(params string[] args) {
-            Dictionary<string, int> counts = new Dictionary<string, int>();
-            // Add all keys from args to dictionary
+        public Dictionary<string, int> CountOf(params string[] args) {
+            Dictionary<string, int> occurences = new Dictionary<string, int>();
+            // Add all args as keys to dictionary
             foreach (string argument in args) {
-                counts.Add(argument, 0);
+                occurences.Add(argument, 0);
             }
+            // Count occurences of all args in the iterator
             for (string s = this.iterator.FirstItem; this.iterator.HasNext(); s = this.iterator.MoveNext()) {
-                if (counts.ContainsKey(this.iterator.CurrentItem)) {
-                    counts[this.iterator.CurrentItem] += 1;
-                } else {
-                    // info - there is no such a word/letter in the text
+                if (occurences.ContainsKey(this.iterator.CurrentItem)) {
+                    occurences[this.iterator.CurrentItem]++;
                 }
             }
-            int[] results = new int[args.Length];
-            int indexCountOf = 0;
-            foreach (string argument in args) {
-                results[indexCountOf] = counts[argument];
-                indexCountOf++;
-            }
-            return results;
+            return occurences;
         }
 
         public int DictionarySize() {
             for (string s = this.iterator.FirstItem; this.iterator.HasNext(); s = this.iterator.MoveNext()) {
-                if (iteratorItemsCount.ContainsKey(this.iterator.CurrentItem)) {
-                    iteratorItemsCount[this.iterator.CurrentItem] += 1;
+                if (iteratorDictionaryWithCounts.ContainsKey(this.iterator.CurrentItem)) {
+                    iteratorDictionaryWithCounts[this.iterator.CurrentItem]++;
                 } else {
-                    iteratorItemsCount[this.iterator.CurrentItem] = 1;
+                    iteratorDictionaryWithCounts[this.iterator.CurrentItem] = 1;
                 }
             }
-            return iteratorItemsCount.Count;
+            return iteratorDictionaryWithCounts.Count;
         }
-
 
         public int Size() {
             int size = 0;
@@ -53,31 +45,35 @@ namespace TextAnalyzer {
             return size;
         }
 
-        public List<string> GetMostUsedWords(int percentage) {
-            List<string> results = new List<string>();
+        public List<string> GetMostUsedWords(int limitPercentage) {
+            List<string> mostUsedWordsAbovePercentage = new List<string>();
             int wordCountTotal = this.Size();
-            var items = from pair in iteratorItemsCount
-                    orderby pair.Value descending
-                    select pair;
-                    
+
+            if (iteratorDictionaryWithCounts.Count == 0) { DictionarySize(); }
+            var items = from pair in iteratorDictionaryWithCounts
+                        orderby pair.Value descending
+                        select pair;
             double currentPercentage = 0;
 
-            foreach (KeyValuePair<string, int> pair in items) {
+            foreach (var pair in items) {
                 currentPercentage = (double) 100 * pair.Value/wordCountTotal;
-                results.Add(pair.Key);
-                if (currentPercentage < percentage) { break; }
+                if (currentPercentage >= limitPercentage) {
+                    mostUsedWordsAbovePercentage.Add(pair.Key);
+                } else { break; }
             }
-            results.Sort();
-            return results;
+
+            mostUsedWordsAbovePercentage.Sort();
+            return mostUsedWordsAbovePercentage;
         }
 
         public Dictionary<string, double> GetLettersPercentages() {
-            this.DictionarySize();
+            if (iteratorDictionaryWithCounts.Count == 0) { DictionarySize(); }
+
             Dictionary<string, double> results = new Dictionary<string, double>();
             int wordCountTotal = this.Size();
             double currentPercentage;
 
-            foreach (KeyValuePair<string, int> pair in iteratorItemsCount) {
+            foreach (KeyValuePair<string, int> pair in iteratorDictionaryWithCounts) {
                 currentPercentage = (double) 100 * pair.Value/wordCountTotal;
                 results[pair.Key] = currentPercentage;
             }
@@ -85,37 +81,20 @@ namespace TextAnalyzer {
         }
 
         public int CountVowels() {
-            int[] counts = this.CountOf("a", "e", "i", "o", "u");//, "y");
-            int vowelsCount = 0;
-            foreach (int number in counts) {
-                vowelsCount += number;
-            }            
+            Dictionary<string, int> counts = this.CountOf("a", "e", "i", "o", "u");// "y" - is not a vowel in Engilsh
             int charCountTotal = this.Size();
+            int vowelsCount = 0;
+
+            foreach (int number in counts.Values) { vowelsCount += number; }
+
             int vowelsPercentage = 100 * vowelsCount/charCountTotal;
             return vowelsPercentage;
         }
 
         public double CountRatio(string a, string b) {
-            int[] counts = this.CountOf(a, b);
-            double ratio = (double) counts[0]/counts[1];
+            Dictionary<string, int> counts = this.CountOf(a, b);
+            double ratio = (double) counts[a]/counts[b];
             return ratio;
-        }
-
-        public Dictionary<string, double> LetterPercentage() {
-            Dictionary<string, double> percentages = new Dictionary<string, double>();
-            int charCountTotal = this.Size();
-
-            foreach (string letter in iteratorItemsCount.Keys) {
-                if (percentages.Keys.Contains(letter)){
-                    percentages[letter] += 1;
-                } else {
-                    percentages[letter] = 1;
-                }
-            }
-            foreach (string letter in iteratorItemsCount.Keys) {
-                percentages[letter] = (double) 100*percentages[letter]/charCountTotal;
-            }
-            return percentages;
         }
     }
 }

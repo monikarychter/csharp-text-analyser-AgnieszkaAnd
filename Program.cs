@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-
 
 namespace TextAnalyzer
 {
@@ -14,57 +12,32 @@ namespace TextAnalyzer
                 System.Console.WriteLine("Please enter at least one commandline argument.");
             }
             
-            foreach (string arg in args) {
-                FileContent currentFile = new FileContent(arg);
+            try {
+                foreach (string arg in args) {
+                    FileContent currentFile = new FileContent(arg);
 
-                // DEBUG PART:
-                // string filereadtxt =  File.ReadAllText("test.txt");
-                // string filereadtxt2 =  File.ReadAllText("test2.txt");
+                    Iterator charIterForFile = currentFile.CharIterator();
+                    Iterator wordIterForFile = currentFile.WordIterator();
 
-                Iterator charIterForFile = currentFile.CharIterator();
-                Iterator wordIterForFile = currentFile.WordIterator();
+                    StatisticalAnalysis newAnalysisChar = new StatisticalAnalysis(charIterForFile);
+                    StatisticalAnalysis newAnalysisWord = new StatisticalAnalysis(wordIterForFile);
 
-                // DEBUG PART:
-                // int counter_a = 0;
-                // count occurences of a letter in the iterator
-                // for (string s = charIterForFile.FirstItem; charIterForFile.HasNext(); s = charIterForFile.MoveNext()) {
-                // for (string s = charIterForFile.FirstItem; charIterForFile.HasNext(); s = charIterForFile.MoveNext()) {
-                // for (string s = wordIterForFile.FirstItem; wordIterForFile.HasNext(); s = wordIterForFile.MoveNext()) {
-                //     System.Console.WriteLine(s);
-                    // System.Console.WriteLine(s);
-                    // if (s == "a") {
-                    //     counter_a += 1;
-                    // } else {
-                    //     // info - there is no such a word/letter in the text
-                    // }
-                // }
-
-
-                StatisticalAnalysis newAnalysisChar = new StatisticalAnalysis(charIterForFile);
-                StatisticalAnalysis newAnalysisWord = new StatisticalAnalysis(wordIterForFile);
-
-                System.Console.WriteLine($"=={currentFile.GetFilename()}==");
-                System.Console.WriteLine($"Char count: {newAnalysisChar.Size()}");
-                System.Console.WriteLine($"Word count: {newAnalysisWord.Size()}");
-                System.Console.WriteLine($"Dict size: {newAnalysisWord.DictionarySize()}");
-                System.Console.Write($"Most used words (>1%): [");
-                foreach (string item in newAnalysisWord.GetMostUsedWords(1)) {
-                    System.Console.Write($"{item},");
+                    System.Console.WriteLine($"\n=={currentFile.GetFilename()}==");
+                    View.Print("Char count", newAnalysisChar.Size());
+                    View.Print("Word count", newAnalysisWord.Size());
+                    View.Print("Dict size", newAnalysisWord.DictionarySize());
+                    View.Print("Most used words (>1%)", newAnalysisWord.GetMostUsedWords(1));
+                    View.Print("'love' count", newAnalysisWord.CountOf("love")["love"]);
+                    View.Print("'hate' count", newAnalysisWord.CountOf("hate")["hate"]);
+                    View.Print("'music' count", newAnalysisWord.CountOf("music")["music"]);
+                    View.Print("vowels %", newAnalysisChar.CountVowels());
+                    View.Print("'a' count", newAnalysisChar.CountOf("a")["a"]);
+                    View.Print("'e' count", newAnalysisChar.CountOf("e")["e"]);
+                    View.Print("'a:e count ratio'",  newAnalysisChar.CountRatio("a","e"));
+                    View.Print(newAnalysisChar.GetLettersPercentages());
                 }
-                System.Console.WriteLine("]");
-                System.Console.WriteLine($"'love' count: {newAnalysisWord.CountOf("love")["love"]}");
-                System.Console.WriteLine($"'hate' count: {newAnalysisWord.CountOf("hate")["hate"]}");
-                System.Console.WriteLine($"'music' count: {newAnalysisWord.CountOf("music")["music"]}");
-                System.Console.WriteLine($"vowels %: {newAnalysisChar.CountVowels()}");
-                System.Console.WriteLine($"'a' count: {newAnalysisChar.CountOf("a")["a"]}");
-                System.Console.WriteLine($"'e' count: {newAnalysisChar.CountOf("e")["e"]}");
-                System.Console.WriteLine($"'a:e count ratio' : {String.Format("{0:0.00}", newAnalysisChar.CountRatio("a","e"))}");
-                foreach (KeyValuePair<string, double> item in newAnalysisChar.GetLettersPercentages()) {
-                    System.Console.Write($"[ {item.Key.ToUpper()} -> {String.Format("{0:0.00}", item.Value)}] ");
-                }
-                // foreach (Dictionary<string, double> item in newAnalysisChar.LetterPercentage()) {
-                //     System.Console.Write($"[ {item.Key.ToUpper()} -> {item.Value}");
-                // }
+            } catch (FileNotFoundException e) {
+                System.Console.WriteLine(e.GetType().ToString() + " Please input a valid filename.");
             }
         }
     }

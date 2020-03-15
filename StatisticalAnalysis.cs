@@ -6,6 +6,7 @@ namespace TextAnalyzer {
     class StatisticalAnalysis {
         public Iterator iterator;
         private Dictionary<string, int> iteratorDictionaryWithCounts= new Dictionary<string, int>();
+        private Dictionary<string, double> iteratorDictionaryWithPercentages= new Dictionary<string, double>();
 
         public StatisticalAnalysis(Iterator iteratorInstance){
             this.iterator = iteratorInstance;
@@ -46,20 +47,14 @@ namespace TextAnalyzer {
         }
 
         public List<string> GetMostUsedWords(int limitPercentage) {
+            if (iteratorDictionaryWithPercentages.Count == 0) { GetLettersPercentages(); }
             List<string> mostUsedWordsAbovePercentage = new List<string>();
             int wordCountTotal = this.Size();
 
-            if (iteratorDictionaryWithCounts.Count == 0) { DictionarySize(); }
-            var items = from pair in iteratorDictionaryWithCounts
-                        orderby pair.Value descending
-                        select pair;
-            double currentPercentage = 0;
-
-            foreach (var pair in items) {
-                currentPercentage = (double) 100 * pair.Value/wordCountTotal;
-                if (currentPercentage >= limitPercentage) {
+            foreach (var pair in iteratorDictionaryWithPercentages) {
+                if (pair.Value >= (double) limitPercentage) {
                     mostUsedWordsAbovePercentage.Add(pair.Key);
-                } else { break; }
+                }
             }
 
             mostUsedWordsAbovePercentage.Sort();
@@ -69,15 +64,14 @@ namespace TextAnalyzer {
         public Dictionary<string, double> GetLettersPercentages() {
             if (iteratorDictionaryWithCounts.Count == 0) { DictionarySize(); }
 
-            Dictionary<string, double> results = new Dictionary<string, double>();
             int wordCountTotal = this.Size();
             double currentPercentage;
 
             foreach (KeyValuePair<string, int> pair in iteratorDictionaryWithCounts) {
                 currentPercentage = (double) 100 * pair.Value/wordCountTotal;
-                results[pair.Key] = currentPercentage;
+                iteratorDictionaryWithPercentages[pair.Key] = currentPercentage;
             }
-            return results;
+            return iteratorDictionaryWithPercentages;
         }
 
         public int CountVowels() {
@@ -94,7 +88,7 @@ namespace TextAnalyzer {
         public double CountRatio(string a, string b) {
             Dictionary<string, int> counts = this.CountOf(a, b);
             double ratio = (double) counts[a]/counts[b];
-            return ratio;
+            return Math.Round(ratio, 2);
         }
     }
 }

@@ -1,34 +1,28 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace TextAnalyzer {
     class CharIterator : Iterator {
         private int index;
-        private List<string> data = new List<string>();
+        private FileContent data;
+        private string fileChars;
 
         public string FirstItem {
-            get {
-                index = 0;
-                return data[this.index];
-            }
+            get { index = 0; return fileChars[index].ToString(); }
         }
         public string CurrentItem {
-            get {
-                return data[this.index];
-            }
+            get { return fileChars[this.index].ToString(); }
         }
 
         public CharIterator(FileContent fileContent) {
             this.index = 0;
-            foreach (char letter in fileContent.GetFileText()){
-                if (isAlphaNumeric(letter.ToString())) {
-                    data.Add(letter.ToString().ToLower());
-                }
-            }
+            this.data = fileContent;
+            this.fileChars = fileContent.GetFileChars();
         }
 
         public bool HasNext() {
-            if (this.index < data.Count) {
+            if (this.index < fileChars.Length) {
                 return true;
             }
             return false;
@@ -37,7 +31,7 @@ namespace TextAnalyzer {
         public string MoveNext() {
             this.index++;
             if (HasNext()) {
-                return data[this.index];
+                return fileChars[this.index].ToString();
             } else {
                 return string.Empty;
             }

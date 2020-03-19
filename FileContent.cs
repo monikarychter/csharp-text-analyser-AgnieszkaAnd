@@ -2,12 +2,18 @@ using System;
 using System.IO;
 
 namespace TextAnalyzer {
-    class FileContent {
+    class FileContent : IterableText {
         private string fileName;
         private string fileContentText = null;
+
         public FileContent(String filename) {
             this.fileName = filename;
-            this.fileContentText = File.ReadAllText(filename).Replace("\n", " ");
+            string text = File.ReadAllText(filename);
+            if (text.Contains("\r\n")) {
+                this.fileContentText = File.ReadAllText(filename).Replace("\r\n", " ").Replace("  ", " ");
+            } else {
+                this.fileContentText = File.ReadAllText(filename).Replace("\n", " ").Replace("  ", " ");
+            }
         }
         public Iterator CharIterator() {
             return new CharIterator(this);
@@ -18,8 +24,11 @@ namespace TextAnalyzer {
         public string GetFilename() {
             return this.fileName;
         }
-        public string GetFileText() {
-            return this.fileContentText;
+        public string GetFileChars() {
+            return this.fileContentText.ToLower().Replace(" ", string.Empty);
+        }
+        public string[] GetFileWords() {
+            return this.fileContentText.ToLower().Split(" ");
         }
     }
 }

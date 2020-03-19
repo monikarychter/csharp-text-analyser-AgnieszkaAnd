@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace TextAnalyzer {
     interface Iterator {
         string FirstItem { get; }

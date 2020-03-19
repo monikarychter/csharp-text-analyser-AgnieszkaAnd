@@ -46,7 +46,7 @@ namespace TextAnalyzer
 
             DateTime endTime = DateTime.Now;
             TimeSpan totalTime = endTime.Subtract(startTime);
-            System.Console.WriteLine($"\nTotal bemchmark time: {totalTime.TotalSeconds} secs");
+            System.Console.WriteLine($"\nTotal benchmark time: {totalTime.TotalSeconds} secs");
         }
     }
 }

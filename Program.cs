@@ -7,6 +7,7 @@ namespace TextAnalyzer
     {
         static void Main(string[] args)
         {
+            DateTime startTime = DateTime.Now;
             // -- text1.txt text2.txt
             if (args.Length == 0) {
                 System.Console.WriteLine("Please enter at least one commandline argument.");
@@ -42,6 +43,10 @@ namespace TextAnalyzer
                 View.Print("'a:e count ratio'",  newAnalysisChar.CountRatio("a","e"));
                 View.Print(newAnalysisChar.GetLettersPercentages());
             }
+
+            DateTime endTime = DateTime.Now;
+            TimeSpan totalTime = endTime.Subtract(startTime);
+            System.Console.WriteLine($"\nTotal bemchmark time: {totalTime.TotalSeconds} secs");
         }
     }
 }

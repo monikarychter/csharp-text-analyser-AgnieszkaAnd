@@ -1,27 +1,23 @@
-using System.Collections.Generic;
-
 namespace TextAnalyzer {
     class WordIterator : Iterator {
-        private int index = 0;
-        private List<string> data = new List<string>();
+        private int index;
+        private FileContent data;
+        private string[] fileWords;
         public string FirstItem {
-            get { index = 0; return data[index]; }
+            get { index = 0; return fileWords[index]; }
         }
         public string CurrentItem {
-            get { return data[index]; }
+            get { return fileWords[index]; }
         }
 
         public WordIterator(FileContent fileContent) {
-            string temp = fileContent.GetFileText();
-            foreach (string word in temp.ToLower().Split(" ")){
-                if (word != "") {
-                    data.Add(word.ToString());
-                }
-            }
+            this.index = 0;
+            this.data = fileContent;
+            this.fileWords = fileContent.GetFileWords();
         }
 
         public bool HasNext() {
-            if (index < data.Count) {
+            if (index < fileWords.Length) {
                 return true;
             }
             return false;
@@ -30,7 +26,7 @@ namespace TextAnalyzer {
         public string MoveNext() {
             this.index++;
             if (HasNext()) {
-                return data[index];
+                return fileWords[index];
             } else {
                 return string.Empty;
             }

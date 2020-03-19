@@ -19,7 +19,7 @@ namespace TextAnalyzer {
                 occurences.Add(argument, 0);
             }
             // Count occurences of all args in the iterator
-            for (string s = this.iterator.FirstItem; this.iterator.HasNext(); s = this.iterator.MoveNext()) {
+            for (string s = this.iterator.FirstItem; this.iterator.HasNext(); s = this.iterator.MoveNext().ToString()) {
                 if (occurences.ContainsKey(this.iterator.CurrentItem)) {
                     occurences[this.iterator.CurrentItem]++;
                 }
@@ -28,7 +28,7 @@ namespace TextAnalyzer {
         }
 
         public int DictionarySize() {
-            for (string s = this.iterator.FirstItem; this.iterator.HasNext(); s = this.iterator.MoveNext()) {
+            for (string s = this.iterator.FirstItem; this.iterator.HasNext(); s = this.iterator.MoveNext().ToString()) {
                 if (iteratorDictionaryWithCounts.ContainsKey(this.iterator.CurrentItem)) {
                     iteratorDictionaryWithCounts[this.iterator.CurrentItem]++;
                 } else {
@@ -40,7 +40,7 @@ namespace TextAnalyzer {
 
         public int Size() {
             int size = 0;
-            for (string s = this.iterator.FirstItem; this.iterator.HasNext(); s = this.iterator.MoveNext()) {
+            for (string s = this.iterator.FirstItem; this.iterator.HasNext(); s = this.iterator.MoveNext().ToString()) {
                 size++;
             }
             return size;

@@ -2,12 +2,12 @@ using System;
 using System.IO;
 
 namespace TextAnalyzer {
-    class FileContent {
+    class FileContent : IterableText {
         private string fileName;
         private string fileContentText = null;
         public FileContent(String filename) {
             this.fileName = filename;
-            this.fileContentText = File.ReadAllText(filename).Replace("\n", " ");
+            this.fileContentText = File.ReadAllText(filename).Replace("\r", string.Empty).Replace("\n", " ");
         }
         public Iterator CharIterator() {
             return new CharIterator(this);

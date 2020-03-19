@@ -5,19 +5,14 @@ namespace TextAnalyzer {
         private int index = 0;
         private List<string> data = new List<string>();
         public string FirstItem {
-            get {
-                index = 0;
-                return data[index];
-            }
+            get { index = 0; return data[index]; }
         }
         public string CurrentItem {
-            get {
-                return data[index];
-            }
+            get { return data[index]; }
         }
 
         public WordIterator(FileContent fileContent) {
-            string temp = fileContent.GetFileText().Replace("\r", " ");
+            string temp = fileContent.GetFileText();
             foreach (string word in temp.ToLower().Split(" ")){
                 if (word != "") {
                     data.Add(word.ToString());

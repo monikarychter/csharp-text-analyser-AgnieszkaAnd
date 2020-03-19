@@ -7,15 +7,10 @@ namespace TextAnalyzer {
         private List<string> data = new List<string>();
 
         public string FirstItem {
-            get {
-                index = 0;
-                return data[this.index];
-            }
+            get { index = 0; return data[this.index]; }
         }
         public string CurrentItem {
-            get {
-                return data[this.index];
-            }
+            get { return data[this.index]; }
         }
 
         public CharIterator(FileContent fileContent) {

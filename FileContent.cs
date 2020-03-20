@@ -10,9 +10,9 @@ namespace TextAnalyzer {
             this.fileName = filename;
             string text = File.ReadAllText(filename);
             if (text.Contains("\r\n")) {
-                this.fileContentText = File.ReadAllText(filename).Replace("\r\n", " ").Replace("  ", " ");
+                this.fileContentText = File.ReadAllText(filename).Replace("\r\n", " ").Replace("  ", " ").Replace("  ", " ");
             } else {
-                this.fileContentText = File.ReadAllText(filename).Replace("\n", " ").Replace("  ", " ");
+                this.fileContentText = File.ReadAllText(filename).Replace("\n", " ").Replace("  ", " ").Replace("  ", " ");
             }
         }
         public Iterator CharIterator() {

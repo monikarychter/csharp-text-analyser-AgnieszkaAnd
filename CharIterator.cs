@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 namespace TextAnalyzer {
     class CharIterator : Iterator {
         private int index;
-        private FileContent data;
         private string fileChars;
 
         public string FirstItem {
@@ -17,7 +16,6 @@ namespace TextAnalyzer {
 
         public CharIterator(FileContent fileContent) {
             this.index = 0;
-            this.data = fileContent;
             this.fileChars = fileContent.GetFileChars();
         }
 

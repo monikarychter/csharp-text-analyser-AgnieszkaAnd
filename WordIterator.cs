@@ -1,7 +1,6 @@
 namespace TextAnalyzer {
     class WordIterator : Iterator {
         private int index;
-        private FileContent data;
         private string[] fileWords;
         public string FirstItem {
             get { index = 0; return fileWords[index]; }
@@ -12,7 +11,6 @@ namespace TextAnalyzer {
 
         public WordIterator(FileContent fileContent) {
             this.index = 0;
-            this.data = fileContent;
             this.fileWords = fileContent.GetFileWords();
         }
 

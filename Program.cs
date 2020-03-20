@@ -19,7 +19,7 @@ namespace TextAnalyzer
 
                 try { currentFile = new FileContent(arg); }
                 catch (FileNotFoundException e) {
-                    System.Console.WriteLine(e.GetType().ToString() + " Please input a valid filename.");
+                    System.Console.WriteLine("\n" + e.GetType().ToString() + " Please input a valid filename.");
                     continue;
                 }
 

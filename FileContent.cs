@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-
+//feedback
 namespace TextAnalyzer {
     class FileContent : IterableText {
         private string fileName;
